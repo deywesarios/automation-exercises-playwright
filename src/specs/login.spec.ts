@@ -28,6 +28,24 @@ test('Fill signup form and create account', async ({ loginPage }) => {
     );
     await loginPage.submitRegistration();
     await loginPage.validateAccountCreated();
-    await loginPage.continueToHome(user.fullName);
+    await loginPage.continueToHome();
+    await loginPage.validateIsLoggedIn(user.fullName);
 
+});
+
+test('Login with valid user', async ({ loginPage, homePage }) => {
+    const email = process.env.TEST_USER_EMAIL!;
+    const password = process.env.TEST_USER_PASSWORD!;
+    
+    await loginPage.login(email, password);
+    await homePage.validateHomePageTitle();
+    await loginPage.validateIsLoggedIn('Automation Exercise Tests');
+});
+
+
+test('Login with invalid user', async ({ loginPage }) => {
+    const user = generateRandomUser();
+
+    await loginPage.login(user.invalidEmail, user.password);
+    await loginPage.validateLoginError();
 });

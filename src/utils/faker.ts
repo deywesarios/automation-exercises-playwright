@@ -22,6 +22,7 @@ function generateRandomUser() {
     const city = faker.location.city();
     const zipcode = faker.location.zipCode();
     const mobileNumber = faker.phone.number();
+    const invalidEmail = faker.internet.email();
 
     return {
         gender,
@@ -37,7 +38,8 @@ function generateRandomUser() {
         state,
         city,
         zipcode,
-        mobileNumber
+        mobileNumber,
+        invalidEmail,
     };
 }
 

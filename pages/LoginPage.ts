@@ -34,7 +34,7 @@ class LoginPage extends BasePage {
     }
 
     private get passwordField() {
-        return this.locator(loginLocators.passwordField);
+        return this.locator(loginLocators.passwordSignupField);
     }
 
     private get firstNameField() {
@@ -103,6 +103,18 @@ class LoginPage extends BasePage {
 
     private get continueButton() {
         return this.locator(loginLocators.continueButton);
+    }
+
+    private get emailLoginField() {
+        return this.locator(loginLocators.emailLoginField);
+    }
+
+    private get passwordLoginField() {
+        return this.locator(loginLocators.passwordLoginField);
+    }
+
+    private get loginButton() {
+        return this.locator(loginLocators.loginButton);
     }
 
     async goToLogin() {
@@ -207,16 +219,29 @@ class LoginPage extends BasePage {
         await expect(this.continueButton).toBeVisible();
     }
 
-    async continueToHome(fullName: string) {
+    async continueToHome() {
         await this.continueButton.click();
         await expect(this.page).toHaveURL('/');
+    }
+
+    async validateIsLoggedIn(fullName: string) {
         await expect(this.page.getByRole('link', { name: 'Logout' })).toBeVisible();
         await expect(this.page.getByRole('link', { name: 'Delete Account' })).toBeVisible();
         const text = await this.page.getByText('Logged in as').textContent();
         expect(text).toContain('Logged in as');
         expect(text).toContain(fullName);
     }
+
+    async login(email: string, password: string) {
+        await this.fillInputField(this.emailLoginField, email);
+        await this.fillInputField(this.passwordLoginField, password);
+        await this.loginButton.click();
+    }
     
+    async validateLoginError() {
+        await this.page.getByText(loginTexts.loginError).waitFor({ state: 'visible' });
+        await expect(this.page.getByText(loginTexts.loginError)).toBeVisible();
+    }
 }
 
 export default LoginPage;
