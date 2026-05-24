@@ -1,13 +1,14 @@
 import { test } from '../fixtures/testFixtures';
 import { generateRandomUser } from '../../src/utils/faker';
 
+const user = generateRandomUser();
+const fullName = process.env.TEST_USER_FULL_NAME!;
+
 test.beforeEach(async ({ loginPage }) => {
     await loginPage.validateIsOnLoginPage();
 });
 
 test('Fill signup form and create account', async ({ loginPage }) => {
-    const user = generateRandomUser();
-
     await loginPage.fillSignupFirstForm(user);
     await loginPage.validateIsOnSignupPage();
     await loginPage.selectGender(user.gender);
@@ -39,13 +40,17 @@ test('Login with valid user', async ({ loginPage, homePage }) => {
     
     await loginPage.login(email, password);
     await homePage.validateHomePageTitle();
-    await loginPage.validateIsLoggedIn('Automation Exercise Tests');
+    await loginPage.validateIsLoggedIn(fullName);
 });
 
-
 test('Login with invalid user', async ({ loginPage }) => {
-    const user = generateRandomUser();
-
     await loginPage.login(user.invalidEmail, user.password);
     await loginPage.validateLoginError();
+});
+
+test('Signup with already registered email', async ({ loginPage }) => {
+    const email = process.env.TEST_USER_EMAIL!;
+
+    await loginPage.fillSignupFirstForm({ fullName, email });
+    await loginPage.validateSignupEmailError();
 });

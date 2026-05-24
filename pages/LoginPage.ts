@@ -242,6 +242,11 @@ class LoginPage extends BasePage {
         await this.page.getByText(loginTexts.loginError).waitFor({ state: 'visible' });
         await expect(this.page.getByText(loginTexts.loginError)).toBeVisible();
     }
+
+    async validateSignupEmailError() {
+        await this.page.getByText(loginTexts.signupEmailError).waitFor({ state: 'visible' });
+        await expect(this.page.getByText(loginTexts.signupEmailError)).toBeVisible();
+    }
 }
 
 export default LoginPage;
