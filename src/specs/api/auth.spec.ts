@@ -78,8 +78,6 @@ test.describe('API Authentication', () => {
     const response = await getAccountDetails(request, email);
     const body = await response.json();
     
-    console.log('Account Details:', body);
-
     expect(response.status()).toBe(200);
     expect(body.responseCode).toBe(200);
     expect(body.user.name).toBe(fullName);

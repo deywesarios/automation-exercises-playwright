@@ -10,8 +10,6 @@ test.describe('API Products', () => {
     const body = await response.json();
     const blueTop = body.products.find((p: any) => p.id === 1);
     
-    console.log('Products List response body:', body);
-
     expect(response.status()).toBe(200);
     expect(body.responseCode).toBe(200);
     expect(body.products).toBeInstanceOf(Array);
@@ -44,7 +42,6 @@ test.describe('API Products', () => {
     const productListBody = await responseProductList.json();
     const products = productListBody.products;
     const randomProduct = products[Math.floor(Math.random() * products.length)];
-    console.log('Randomly selected product for search:', randomProduct);
     const response = await searchProduct(request, randomProduct.name);
     const body = await response.json();
     const searchedProduct = body.products.find((p: any) => p.id === randomProduct.id);
