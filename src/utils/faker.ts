@@ -1,8 +1,6 @@
-import { faker } from '@faker-js/faker';
+const { faker } = require('@faker-js/faker');
 
-export interface GeneratedUser {
-    gender: 'male' | 'female';
-    title: 'Mr' | 'Mrs' | 'Miss';
+interface BaseUser {
     firstName: string;
     lastName: string;
     fullName: string;
@@ -19,12 +17,21 @@ export interface GeneratedUser {
     invalidEmail: string;
 }
 
+export type GeneratedUser =
+    | (BaseUser & {
+          gender: 'male';
+          title: 'Mr';
+      })
+    | (BaseUser & {
+          gender: 'female';
+          title: 'Mrs';
+      });
+
 function generateRandomUser(): GeneratedUser {
-    const gender = faker.helpers.arrayElement(['male', 'female']) as 'male' | 'female';
-    const title = faker.helpers.arrayElement(['Mr', 'Mrs', 'Miss']) as 'Mr' | 'Mrs' | 'Miss';
+    const gender = faker.helpers.arrayElement(['male', 'female']);
     const firstName = faker.person.firstName(gender);
     const lastName = faker.person.lastName();
-    const email = `${firstName}.${lastName}.${faker.string.alphanumeric(6)}@example.com`.toLowerCase();
+    const email = `${firstName}.${lastName}@example.com`.toLowerCase();
     const dateOfBirth = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
     const company = faker.company.name();
     const address = faker.location.streetAddress();
@@ -46,12 +53,12 @@ function generateRandomUser(): GeneratedUser {
 
     return {
         gender,
-        title,
+        title: gender === 'male' ? 'Mr' : 'Mrs',
         firstName,
         lastName,
         fullName: `${firstName} ${lastName}`,
         email,
-        password: faker.internet.password({ length: 10, numbers: true, symbols: true, uppercase: true, lowercase: true }),
+        password: faker.internet.password({ length: 8, numbers: true, symbols: true, uppercase: true, lowercase: true }),
         dateOfBirth,
         company,
         address,

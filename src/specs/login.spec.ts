@@ -2,7 +2,9 @@ import { test } from '../fixtures/testFixtures';
 import { generateRandomUser } from '../../src/utils/faker';
 
 const user = generateRandomUser();
-const fullName = process.env.TEST_USER_FULL_NAME!;
+const email = process.env.TEST_USER_EMAIL;
+const password = process.env.TEST_USER_PASSWORD;
+const fullName = process.env.TEST_USER_FULL_NAME;
 
 test.beforeEach(async ({ loginPage }) => {
     await loginPage.validateIsOnLoginPage();
@@ -35,8 +37,9 @@ test('Fill signup form and create account', async ({ loginPage }) => {
 });
 
 test('Login with valid user', async ({ loginPage, homePage }) => {
-    const email = process.env.TEST_USER_EMAIL!;
-    const password = process.env.TEST_USER_PASSWORD!;
+    if (!email || !password || !fullName) {
+      throw new Error('Missing TEST_USER_EMAIL or TEST_USER_PASSWORD or TEST_USER_FULL_NAME');
+    }
     
     await loginPage.login(email, password);
     await homePage.validateHomePageTitle();
@@ -49,7 +52,9 @@ test('Login with invalid user', async ({ loginPage }) => {
 });
 
 test('Signup with already registered email', async ({ loginPage }) => {
-    const email = process.env.TEST_USER_EMAIL!;
+    if (!email || !fullName) {
+      throw new Error('Missing TEST_USER_EMAIL or TEST_USER_FULL_NAME');
+    }
 
     await loginPage.fillSignupFirstForm({ fullName, email });
     await loginPage.validateSignupEmailError();
