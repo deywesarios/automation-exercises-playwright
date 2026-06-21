@@ -5,11 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "postinstall": "npm install -D @playwright/test@latest",
+    "test:api": "npx playwright test src/specs/api",
+    "test:ui": "npx playwright test --ui",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
     "report": "npx playwright show-report",
-    "ui": "npx playwright test --ui",
-    "debug": "npx playwright test --debug",
-    "headed": "npx playwright test --headed"
+    "browsers:install": "npx playwright install",
+    "browsers:system": "npx playwright install-deps",
+    "postinstall": "npm run browsers:install && npm run browsers:system"
   },
   "keywords": [],
   "author": "",
