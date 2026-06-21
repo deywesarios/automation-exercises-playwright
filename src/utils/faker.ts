@@ -1,6 +1,33 @@
 const { faker } = require('@faker-js/faker');
 
-function generateRandomUser() {
+interface BaseUser {
+    firstName: string;
+    lastName: string;
+    fullName: string;
+    email: string;
+    password: string;
+    dateOfBirth: Date;
+    company: string;
+    address: string;
+    country: string;
+    state: string;
+    city: string;
+    zipcode: string;
+    mobileNumber: string;
+    invalidEmail: string;
+}
+
+export type GeneratedUser =
+    | (BaseUser & {
+          gender: 'male';
+          title: 'Mr';
+      })
+    | (BaseUser & {
+          gender: 'female';
+          title: 'Mrs';
+      });
+
+function generateRandomUser(): GeneratedUser {
     const gender = faker.helpers.arrayElement(['male', 'female']);
     const firstName = faker.person.firstName(gender);
     const lastName = faker.person.lastName();
@@ -26,6 +53,7 @@ function generateRandomUser() {
 
     return {
         gender,
+        title: gender === 'male' ? 'Mr' : 'Mrs',
         firstName,
         lastName,
         fullName: `${firstName} ${lastName}`,
