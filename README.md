@@ -208,7 +208,7 @@ npm run browsers:system
 
 ## Notes
 
-- `headless` is currently set to `false` for visible browser execution (modify in `playwright.config.ts` if needed).
+- `headless` is currently set to `true` for visible browser execution (modify in `playwright.config.ts` if needed).
 - Additional browser projects (`firefox`, `webkit`, mobile views) are present but commented out in `playwright.config.ts`.
 - You can enable `dotenv` features by uncommenting the import and config lines in `playwright.config.ts`.
 - For CI/CD pipelines, set environment variables directly instead of using `.env` file.
